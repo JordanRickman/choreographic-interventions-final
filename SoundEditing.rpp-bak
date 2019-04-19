@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.941/x64" 1555622666
+<REAPER_PROJECT 0.1 "5.941/x64" 1555625129
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -27,7 +27,7 @@
   >
   <APPLYFX_CFG
   >
-  RENDER_FILE "C:\Main\Tresor\ITP\ChoreographicInterventions\choreo-final\heartbeat-single.wav"
+  RENDER_FILE "C:\Main\Tresor\ITP\ChoreographicInterventions\choreo-final\piston-12x.wav"
   RENDER_FMT 0 2 44100
   RENDER_1X 0
   RENDER_RANGE 2 0 0 16 1000
@@ -141,7 +141,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 0
+    SEL 1
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
@@ -423,13 +423,13 @@
     BEAT -1
     AUTOMODE 0
     VOLPAN 0.25118864315096 0 -1 -1 1
-    MUTESOLO 1 0 0
+    MUTESOLO 0 0 0
     IPHASE 0
     ISBUS 0 0
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 1
+    SEL 0
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0

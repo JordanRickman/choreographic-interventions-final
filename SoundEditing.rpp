@@ -1,11 +1,11 @@
-<REAPER_PROJECT 0.1 "5.941/x64" 1555625129
+<REAPER_PROJECT 0.1 "5.941/x64" 1555640944
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
   ENVATTACH 1
   POOLEDENVATTACH 0
   MIXERUIFLAGS 11 48
-  PEAKGAIN 1
+  PEAKGAIN 64
   FEEDBACK 0
   PANLAW 1
   PROJOFFS 0 0 0
@@ -14,8 +14,8 @@
   TIMEMODE 0 5 -1 30 0
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 0
-  ZOOM 71.04526911253225 0 0
+  CURSOR 5
+  ZOOM 140.7553257931996 0 0
   VZOOMEX 13
   USE_REC_CFG 0
   RECMODE 1
@@ -27,7 +27,7 @@
   >
   <APPLYFX_CFG
   >
-  RENDER_FILE "C:\Main\Tresor\ITP\ChoreographicInterventions\choreo-final\piston-12x.wav"
+  RENDER_FILE "C:\Main\Tresor\ITP\ChoreographicInterventions\choreo-final\breathing.wav"
   RENDER_FMT 0 2 44100
   RENDER_1X 0
   RENDER_RANGE 2 0 0 16 1000
@@ -55,8 +55,8 @@
   GLOBAL_AUTO -1
   TEMPO 120 4 4
   PLAYRATE 1 0 0.25 4
-  SELECTION 0 12
-  SELECTION2 0 12
+  SELECTION 0 3.83644453207673
+  SELECTION2 0 3.83644453207673
   MASTERAUTOMODE 0
   MASTERTRACKHEIGHT 0 0
   MASTERPEAKCOL 16576
@@ -141,7 +141,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 1
+    SEL 0
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
@@ -432,7 +432,7 @@
     SEL 0
     REC 0 0 0 0 0 0 0
     VU 2
-    TRACKHEIGHT 0 0 0
+    TRACKHEIGHT 24 0 0
     INQ 0 0 0 0.5 100 0 0 100
     NCHAN 2
     FX 1
@@ -449,7 +449,7 @@
       FADEIN 1 0.01 0 1 0 0
       FADEOUT 1 0.01 0 1 0 0
       MUTE 0
-      SEL 1
+      SEL 0
       IGUID {49AC1602-145F-4FE5-BF9F-51CD052472F2}
       IID 3
       NAME "Piston 9 SOUND EFFECT.mp3"
@@ -460,6 +460,52 @@
       GUID {A8642DFD-D439-4A77-836F-96F93CE3DBCB}
       <SOURCE MP3
         FILE "Piston 9 SOUND EFFECT.mp3" 1
+      >
+    >
+  >
+  <TRACK {A61E3E31-97EC-42FC-A7D4-AFC3BDC40688}
+    NAME "woman female inhale exhale sigh breathing Sound Effects All sounds"
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    VOLPAN 3.98107170553497 0 -1 -1 1
+    MUTESOLO 0 2 0
+    IPHASE 0
+    ISBUS 0 0
+    BUSCOMP 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FREEMODE 0
+    SEL 1
+    REC 0 0 0 0 0 0 0
+    VU 2
+    TRACKHEIGHT 234 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {A61E3E31-97EC-42FC-A7D4-AFC3BDC40688}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0
+      SNAPOFFS 0
+      LENGTH 3.82587409010324
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.01 0 1 0 0
+      MUTE 0
+      SEL 1
+      IGUID {9EEF02F4-D1F2-45CF-8C9C-B762C7964530}
+      IID 15
+      NAME "woman female inhale exhale sigh breathing Sound Effects All sounds.mp3"
+      VOLPAN 1 0 1 -1
+      SOFFS 54.67412590989684
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {8FD2A3FD-E568-4F9A-B4E8-3D615C40C7CE}
+      <SOURCE MP3
+        FILE "woman female inhale exhale sigh breathing Sound Effects All sounds.mp3" 1
       >
     >
   >
