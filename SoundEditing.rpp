@@ -1,0 +1,466 @@
+<REAPER_PROJECT 0.1 "5.941/x64" 1555625129
+  RIPPLE 0
+  GROUPOVERRIDE 0 0 0
+  AUTOXFADE 1
+  ENVATTACH 1
+  POOLEDENVATTACH 0
+  MIXERUIFLAGS 11 48
+  PEAKGAIN 1
+  FEEDBACK 0
+  PANLAW 1
+  PROJOFFS 0 0 0
+  MAXPROJLEN 0 600
+  GRID 3199 8 1 8 1 0 0 0
+  TIMEMODE 0 5 -1 30 0
+  VIDEO_CONFIG 0 0 256
+  PANMODE 3
+  CURSOR 0
+  ZOOM 71.04526911253225 0 0
+  VZOOMEX 13
+  USE_REC_CFG 0
+  RECMODE 1
+  SMPTESYNC 0 30 100 40 1000 300 0 0 1 0 0
+  LOOP 0
+  LOOPGRAN 0 4
+  RECORD_PATH "" ""
+  <RECORD_CFG
+  >
+  <APPLYFX_CFG
+  >
+  RENDER_FILE "C:\Main\Tresor\ITP\ChoreographicInterventions\choreo-final\piston-12x.wav"
+  RENDER_FMT 0 2 44100
+  RENDER_1X 0
+  RENDER_RANGE 2 0 0 16 1000
+  RENDER_RESAMPLE 3 0 1
+  RENDER_ADDTOPROJ 0
+  RENDER_STEMS 0
+  RENDER_DITHER 0
+  TIMELOCKMODE 1
+  TEMPOENVLOCKMODE 1
+  ITEMMIX 0
+  DEFPITCHMODE 589824
+  TAKELANE 1
+  SAMPLERATE 44100 0 0
+  <RENDER_CFG
+    ZXZhdxABAA==
+  >
+  LOCK 1
+  <METRONOME 6 2
+    VOL 0.25 0.125
+    FREQ 800 1600 1
+    BEATLEN 4
+    SAMPLES "" ""
+    PATTERN 2863311530 2863311529
+  >
+  GLOBAL_AUTO -1
+  TEMPO 120 4 4
+  PLAYRATE 1 0 0.25 4
+  SELECTION 0 12
+  SELECTION2 0 12
+  MASTERAUTOMODE 0
+  MASTERTRACKHEIGHT 0 0
+  MASTERPEAKCOL 16576
+  MASTERMUTESOLO 0
+  MASTERTRACKVIEW 0 0.6667 0.5 0.5 0 0 0
+  MASTERHWOUT 0 0 1 0 0 0 0 -1
+  MASTER_NCH 2 2
+  MASTER_VOLUME 1 0 -1 -1 1
+  MASTER_FX 1
+  MASTER_SEL 0
+  <MASTERPLAYSPEEDENV
+    ACT 0 -1
+    VIS 0 1 1
+    LANEHEIGHT 0 0
+    ARM 0
+    DEFSHAPE 0 -1 -1
+  >
+  <TEMPOENVEX
+    ACT 1 -1
+    VIS 1 0 1
+    LANEHEIGHT 0 0
+    ARM 0
+    DEFSHAPE 1 -1 -1
+  >
+  <PROJBAY
+  >
+  <TRACK {E542F75C-2E51-4C4B-87ED-9F28A089C3D6}
+    NAME electricity
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    VOLPAN 1 0 -1 -1 1
+    MUTESOLO 1 0 0
+    IPHASE 0
+    ISBUS 0 0
+    BUSCOMP 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FREEMODE 0
+    SEL 0
+    REC 0 0 0 0 0 0 0
+    VU 2
+    TRACKHEIGHT 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {E542F75C-2E51-4C4B-87ED-9F28A089C3D6}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0
+      SNAPOFFS 0
+      LENGTH 2.29377799424756
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.02642 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {9BD1A7F3-AA88-4193-AB18-626A464909EB}
+      IID 1
+      NAME electricity.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 0.34307056571026
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {4A0E1974-3167-445B-B12C-C5D05587D6F6}
+      <SOURCE WAVE
+        FILE "electricity.wav"
+      >
+    >
+  >
+  <TRACK {70D39EB6-9253-42EE-B123-8852D3F6043E}
+    NAME 387072__tobiasludwig__heartbeat
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    VOLPAN 1 0 -1 -1 1
+    MUTESOLO 0 0 0
+    IPHASE 0
+    ISBUS 0 0
+    BUSCOMP 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FREEMODE 0
+    SEL 1
+    REC 0 0 0 0 0 0 0
+    VU 2
+    TRACKHEIGHT 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {70D39EB6-9253-42EE-B123-8852D3F6043E}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {49979A76-4A09-40AD-B958-BB3531654585}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {0969682E-636C-4BC3-A79E-122121D5C460}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 1
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {72C92A67-C525-4ACA-8D94-99CFD6025698}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {B095F449-0516-4BF1-A290-C152B9ECA949}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 2
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {800E4B0F-312B-4AB3-9C17-935D02D29DBC}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {66EEEF82-EF18-4B24-835B-582A1E4A1413}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 3
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {D72EEEAA-9641-4EF6-890F-546802D0E83E}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {E7D6D368-C327-436C-ABE4-4C24B26B8C55}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 4
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {00AA9A1B-989C-4BD6-B106-E52F8E1C65FF}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {691C31DC-80EE-47CD-8FF4-5211CCC6B457}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 5
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {ABD87FFA-39B1-4BED-9AFD-23DD528BDE09}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {D88BC771-7EBE-4123-BE85-3548A61F904E}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 6
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {F96613C6-F22E-4EDD-BB0A-A7FFCB17C533}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {3D8268CD-1F08-4D02-9433-9421575D6DC0}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 7
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {B2B80E9E-226C-4C4B-BB12-CBD642CD63DA}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {EA126152-24F1-4FB1-AD69-A85BCF944629}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 8
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {07DCC53F-F35A-4935-9AF2-A73FD56A4484}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {D4658862-4D92-4EB5-A433-1345CD018717}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 9
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {F57839C9-CA5E-48EA-A99D-D0FC4EAC4140}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {9764281A-DEEA-466D-9253-2174F7FFA017}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 10
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {7AC6A82E-7823-48A3-B171-4E1358953330}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {B89CEA53-AD55-4CB0-86F0-39723FE9BEAE}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+    <ITEM
+      POSITION 11
+      SNAPOFFS 0
+      LENGTH 1
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.328051 0 1 0 0
+      MUTE 0
+      SEL 0
+      IGUID {6545B305-6362-480F-BF24-DA3908552BF9}
+      IID 2
+      NAME 387072__tobiasludwig__heartbeat.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.14637147934627
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {AFA673B5-5C60-43CF-B4E0-510B4636BFE1}
+      <SOURCE WAVE
+        FILE "387072__tobiasludwig__heartbeat.wav"
+      >
+    >
+  >
+  <TRACK {D6D02FA1-C8EE-4174-BABC-6D616BB8A81A}
+    NAME "Piston 9 SOUND EFFECT"
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    VOLPAN 0.25118864315096 0 -1 -1 1
+    MUTESOLO 0 0 0
+    IPHASE 0
+    ISBUS 0 0
+    BUSCOMP 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FREEMODE 0
+    SEL 0
+    REC 0 0 0 0 0 0 0
+    VU 2
+    TRACKHEIGHT 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {D6D02FA1-C8EE-4174-BABC-6D616BB8A81A}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0
+      SNAPOFFS 0
+      LENGTH 12
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0
+      FADEOUT 1 0.01 0 1 0 0
+      MUTE 0
+      SEL 1
+      IGUID {49AC1602-145F-4FE5-BF9F-51CD052472F2}
+      IID 3
+      NAME "Piston 9 SOUND EFFECT.mp3"
+      VOLPAN 1 0 1 -1
+      SOFFS 1.45129668663258
+      PLAYRATE 0.6856561337816 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {A8642DFD-D439-4A77-836F-96F93CE3DBCB}
+      <SOURCE MP3
+        FILE "Piston 9 SOUND EFFECT.mp3" 1
+      >
+    >
+  >
+>

@@ -1,99 +1,15 @@
-// CONFIGURATION CONSTANTS
-const WINDOW_SIZE = 10; // Frames
-const RAMP_INTERVAL = 0.01; // Seconds
-const TRIGGER_DISTANCE = 0.4; // Meters
-const GRID_CHANNELS_WIDTH = 2;
-const GRID_CHANNELS_HEIGHT = 2;
-const MAX_LEFT_RIGHT_DISTANCE = 1; // Meters away from origin (center)
-const MIN_FRONT_BACK_DISTANCE = 2; // Meters
-const MAX_FRONT_BACK_DISTANCE = 6; // Meters
-const MAX_JOINT_DISTANCE = 1; // Meters
-const ROOM_CENTER_Z = 2.5; // Meters to center of space from kinect
+// ----- UTILITY FUNCTIONS -----
+// Average an array of numbers
+function average(arr) {
+  const sum = arr.reduce((total, next) => next+total);
+  return sum / arr.length;
+}
 
+
+// ----- SETUP: KINECT -----
 let kinectron = null;
 let jointsBuffer = [];
 let frameCount = -1; // -1 b/c increments to 0 on first run of draw();
-
-let playing = false;
-let out = new Tone.MultiChannelOutput(4);
-// const out = new Tone.GridMultiChannelOutput(GRID_CHANNELS_WIDTH, GRID_CHANNELS_HEIGHT);
-out.connect(document.getElementById("multichannel-meter"));
-let panner = new Tone.MultiChannelPanner(4);
-// const panner = new Tone.GridPanner(GRID_CHANNELS_WIDTH, GRID_CHANNELS_HEIGHT);
-panner.connect(out);
-const masterVolume = new Tone.Volume();
-masterVolume.connect(panner);
-
-let instruments = [];
-function addSound(name, filename, jointOne, jointTwo, isLoop, isDistanceBased) {
-  new Tone.Buffer(filename, buffer => {
-    console.log(`Buffer finished loading for ${filename}`);
-    let player = new Tone.Player(buffer);
-    player.loop = isLoop;
-    let fader = null;
-    if (isDistanceBased) {
-      fader = new Tone.Gain(0).connect(masterVolume);
-      player.connect(fader);
-      player.start();
-    } else {
-      player.connect(masterVolume);
-    }
-    instruments.push({
-      'name': name,
-      'filename': filename,
-      'player': player,
-      'fader': fader,
-      'jointOne': jointOne,
-      'jointTwo': jointTwo,
-      'isLoop': isLoop,
-      'on': false,
-      'isDistanceBased': isDistanceBased,
-      'wasTriggerDistance': false
-    });
-  });
-}
-Tone.Buffer.on('load', () => {
-  console.log('All buffers finished loading.');
-  const playbutton = document.getElementById('playbutton');
-  playbutton.innerHTML = 'Play All';
-  playbutton.disabled = false;
-  playbutton.addEventListener('click', toggle);
-});
-function loadSounds() {
-  addSound('three-voices', 'three-voices.mp3', kinectron.ELBOWRIGHT, kinectron.KNEERIGHT, true, false);
-  addSound('cracking-knuckles', 'cracking-knuckles.wav', kinectron.HANDLEFT, kinectron.FOOTLEFT, true, false);
-  addSound('electricity', 'electricity.wav', kinectron.HEAD, kinectron.HANDLEFT, true, true);
-  Tone.context.resume(); // Start the AudioContext
-  // TODO More sounds
-  const playbutton = document.getElementById('playbutton');
-  playbutton.removeEventListener('click', loadSounds);
-  playbutton.disabled = true;
-  playbutton.innerHTML = 'Loading...';
-}
-// Chrome requires user interaction to start the audio context, without which we can't load the Buffers
-document.getElementById('playbutton').addEventListener('click', loadSounds);
-
-function play() {
-  console.log('playAll');
-  instruments.forEach(instrument => instrument['player'].start());
-  playing = true;
-}
-
-function stop() {
-  console.log('stopAll');
-  instruments.forEach(instrument => instrument['player'].stop());
-  playing = false;
-}
-
-function toggle() {
-  if (playing) {
-    stop();
-    document.getElementById('playbutton').innerHTML = 'Play All';
-  } else {
-    play();
-    document.getElementById('playbutton').innerHTML = 'Stop All';
-  }
-}
 
 function bodyTracked(body) {
   // console.log('bodyTracked');
@@ -105,117 +21,286 @@ function bodyTracked(body) {
   jointsBuffer.push(body.joints);
 }
 
+
+// Dancer positions received over OSC. format: {x: x, y: y}
+let positions = [];
+
+// Get data from Processing sketch
+// Values will return an array of comma-delimited x,y values as strings.
+// e.g. ['24, 356', '973, 12', '187, 44']
+function receiveOsc(address, values) {
+  //console.log("received OSC: " + address + "\t" + value.length);
+  // Look for messages addressed to '/centers'
+  if (address == '/centers') {
+    // Forget it if there's nothing
+    if (values[0] == undefined) return;
+    // If there's data, empty out the positions array
+    positions = [];
+    // Iterate through values array
+    for (let value of values) {
+      // For each value: 'x, y'... create a 2-position array
+      // to store x and y separately: [x, y]
+      let xy = value.split(',');
+      x = int(xy[0]);
+      y = int(xy[1]);
+      // Turn it into an object literal
+      positions.push({
+        x: x,
+        y: y
+      });
+      // console.log(`position: (${x}, ${y})`);
+    }
+  }
+}
+
+// Ability to send messages back to Processing
+// We're not using this
+function sendOsc(address, value) {
+  socket.emit('message', [address].concat(value));
+}
+
+// Set-up the port number
+function setupOsc(oscPortIn, oscPortOut) {
+  var socket = io.connect('http://127.0.0.1:8081', {
+    port: 8081,
+    rememberTransport: false
+  });
+  socket.on('connect', function() {
+    socket.emit('config', {
+      server: {
+        port: oscPortIn,
+        host: '127.0.0.1'
+      },
+      client: {
+        port: oscPortOut,
+        host: '127.0.0.1'
+      }
+    });
+  });
+  socket.on('message', function(msg) {
+    //console.log(msg);
+    // msg is an array: ['/centers', '345, 56', '87, 19']
+    // First item in msg array is going to be the address: '/centers'
+    // Rest of message will be data values: 'x, y' positions
+    receiveOsc(msg[0], msg.splice(1));
+  });
+}
+
+
+// ----- SETUP: ToneJS -----
+let players = {};
+let masterVolume = null;
+let playing = false;
+const playbutton = document.getElementById('playbutton');
+let heartbeatGain = null;
+let pistonGain = null;
+let threeVoicesWasTriggered = false;
+
+function playAll() {
+  console.log('playAll');
+  instruments.forEach(instrument => instrument['player'].start());
+  playing = true;
+}
+
+function stopAll() {
+  console.log('stopAll');
+  instruments.forEach(instrument => instrument['player'].stop());
+  playing = false;
+}
+
+function toggle() {
+  if (playing) {
+    stopAll();
+    document.getElementById('playbutton').innerHTML = 'Play All';
+  } else {
+    playAll();
+    document.getElementById('playbutton').innerHTML = 'Stop All';
+  }
+}
+
+function loadSound(label, filename, isLoop, callback) {
+  new Tone.Buffer(filename, buffer => {
+    console.log(`Buffer finished loading for ${filename}`);
+    let player = new Tone.Player(buffer);
+    player.loop = isLoop;
+    player.connect(masterVolume);
+    players[label] = player;
+    if (callback)
+      callback(player);
+  });
+}
+
+function initTone() {
+  Tone.context.resume(); // Start the AudioContext
+  masterVolume = new Tone.Volume().toMaster();
+  Tone.Master.connect(document.getElementById("multichannel-meter"));
+
+  Tone.Buffer.on('load', () => {
+    console.log('All buffers finished loading.');
+    playbutton.innerHTML = 'Play All';
+    playbutton.disabled = false;
+    playbutton.addEventListener('click', toggle);
+  });
+  loadSound('three-voices', 'three-voices.mp3', true);
+  loadSound('electricity', 'electricity.wav', false);
+  loadSound('heartbeat', 'heartbeat-12x.wav', true, player => {
+    player.disconnect(0);
+    heartbeatGain = new Tone.Gain().connect(masterVolume);
+    player.connect(heartbeatGain);
+    player.start();
+  });
+  loadSound('piston', 'piston-12x.wav', true, player => {
+    player.disconnect(0);
+    pistonGain = new Tone.Gain(0).connect(masterVolume); // start with only heartbeat
+    player.connect(pistonGain);
+    player.start();
+  });
+  loadSound('breathing', 'breathing.wav', false);
+
+  playbutton.removeEventListener('click', initTone);
+  playbutton.disabled = true;
+  playbutton.innerHTML = 'Loading...';
+}
+// Chrome requires user interaction to start the audio context
+document.getElementById('playbutton').addEventListener('click', initTone);
+
+
+
+// ----- p5 setup() function -----
 function setup() {
-  createCanvas(400, 400);
-  background(256);
+  // createCanvas(400, 400);
+  // background(256);
 
   // Define and create an instance of kinectron
   // kinectron = new Kinectron("10.17.201.104");
   kinectron = new Kinectron("10.17.119.223");
-  // kinectron = new Kinectron("127.0.0.1");
 
   // Connect with application over peer
   kinectron.makeConnection();
 
   // Request all tracked bodies and pass data to your callback
   kinectron.startTrackedBodies(bodyTracked);
+
+
+  // Set-up OSC communication
+  // 12000 is the port number for receiving data
+  // 3334 is the port number for sending data
+  setupOsc(12000, 3334);
+  noCursor();
 }
 
 
-function average(arr) {
-  const sum = arr.reduce((total, next) => next+total);
-  return sum / arr.length;
+
+// ----- Code for each draw() loop -----
+function handleElectricity(dancerPosition) {
+  if (!players['electricity'] || players['electricity'].state === 'started')
+    return;
+
+  // Max progress: happens ~once per 2 seconds
+  // Min progress: happens ~once per 20 seconds
+  // This function fires 6x per second at 60 FPS.
+  const probability = map(dancerPosition.progress, 0, 1, 1/ (20*6), 1 / (2*6));
+  if (random() > probability)
+    return; // Don't fire sound
+  players['electricity'].start();
 }
 
-function computeTheta(x, y) {
-	if (x > 0) {
-		return Math.atan(y / x);
-	} else if (x < 0) {
-		return Math.atan(x / y) + Math.PI;
-	} else if (y < 0) { // Vertical line down
-		return 3*Math.PI / 2;
-	} else { // Vertical line up
-		return Math.PI / 2;
-	}
+function handleHeartbeat(dancerPosition) {
+  if (!players['heartbeat'] || !players['piston'])
+    return; // Buffers not yet loaded
+
+  // Crossfade between the two "heartbeats"
+  heartbeatGain.gain.linearRampTo(1 - dancerPosition.progress, RAMP_INTERVAL);
+  pistonGain.gain.linearRampTo(dancerPosition.progress, RAMP_INTERVAL);
+}
+
+function handleThreeVoices(dancerPosition) {
+  if (!players['three-voices'] || jointsBuffer.length == 0)
+    return; // Buffer not yet loaded.
+  const player = players['three-voices'];
+
+  const distances = jointsBuffer.map(frame => {
+    const jointOneX = frame[kinectron.ELBOWRIGHT].cameraX;
+    const jointOneY = frame[kinectron.ELBOWRIGHT].cameraY;
+    const jointOneZ = frame[kinectron.ELBOWRIGHT].cameraZ;
+    const jointTwoX = frame[kinectron.KNEERIGHT].cameraX;
+    const jointTwoY = frame[kinectron.KNEERIGHT].cameraY;
+    const jointTwoZ = frame[kinectron.KNEERIGHT].cameraZ;
+    return dist(jointOneX, jointOneY, jointOneZ, jointTwoX, jointTwoY, jointTwoZ);
+  });
+  const avgDistance = average(distances);
+  console.log(`three-voices (right elbow-knee): ${avgDistance} meters`);
+  if (player.state === 'stopped' && !threeVoicesWasTriggered && avgDistance < TRIGGER_DISTANCE) {
+    console.log(`three-voices ON.`);
+    // TODO figure out how to seek to where we left off
+    player.start();
+    threeVoicesWasTriggered = true;
+  }
+  if (threeVoicesWasTriggered && avgDistance >= TRIGGER_DISTANCE) {
+    // Don't trigger on/off again until joints are separated and then brought back together
+    threeVoicesWasTriggered = false;
+  }
+  if (player.state === 'started' && !threeVoicesWasTriggered && avgDistance < TRIGGER_DISTANCE) {
+    console.log(`three-voices OFF.`);
+    player.stop();
+    threeVoicesWasTriggered = true;
+  }
+}
+
+function handleBreathing() {
+  if (!players['three-voices'] || jointsBuffer.length == 0)
+    return; // Buffer not yet loaded.
+  const player = players['three-voices'];
+
+  const distances = jointsBuffer.map(frame => {
+    const jointOneX = frame[kinectron.HANDLEFT].cameraX;
+    const jointOneY = frame[kinectron.HANDLEFT].cameraY;
+    const jointOneZ = frame[kinectron.HANDLEFT].cameraZ;
+    const jointTwoX = frame[kinectron.HANDRIGHT].cameraX;
+    const jointTwoY = frame[kinectron.HANDRIGHT].cameraY;
+    const jointTwoZ = frame[kinectron.HANDRIGHT].cameraZ;
+    return dist(jointOneX, jointOneY, jointOneZ, jointTwoX, jointTwoY, jointTwoZ);
+  });
+  const avgDistance = average(distances);
+  const heights = jointsBuffer.map((frame, i) => {
+    const leftHandY = frame[kinectron.HANDLEFT].cameraY;
+    const rightHandY = frame[kinectron.HANDRIGHT].cameraY;
+    const handsAvgY = average([leftHandY, rightHandY]);
+    const headY = frame[kinectron.HEAD].cameraY;
+    handsAvgY - headY;
+  });
+  const avgHeight = averages(heights);
+  console.log(`breathing (left-right hand): ${avgDistance} meters apart, ${avgHeight} meters above head.`);
+
+  // Note we are triggering on *greater* than TRIGGER_DISTANCE in this case
+  if (avgHeight > BREATH_HAND_TRIGGER_HEIGHT && avgDistance > TRIGGER_DISTANCE && players['breathing'].state === 'stopped') {
+     players['breathing'].start();
+  }
+  // There is no need to handle stopping the breathing sound, because the Tone.Player does not loop.
+  // However, the sound will keep repeating so long as the hands are in position.
 }
 
 function draw() {
+  // console.log(`FPS: ${getFrameRate()}`);
+
   frameCount++;
-  if ((frameCount % WINDOW_SIZE) != 0 || jointsBuffer.length == 0)
+  if ((frameCount % WINDOW_SIZE) != 0 || positions.length == 0)
     return;
 
-  instruments.forEach(instrument => {
-    const distances = jointsBuffer.map(frame => {
-      const jointOneX = frame[instrument['jointOne']].cameraX;
-      const jointOneY = frame[instrument['jointOne']].cameraY;
-      const jointTwoX = frame[instrument['jointTwo']].cameraX;
-      const jointTwoY = frame[instrument['jointTwo']].cameraY;
-      return dist(jointOneX, jointOneY, jointTwoX, jointTwoY);
-    });
-    const avgDistance = average(distances);
-    console.log(`${instrument['name']}: ${avgDistance} meters`);
-    if (instrument['isDistanceBased']) {
-      const gain = map(avgDistance, MAX_JOINT_DISTANCE, 0, 0, 1);
-      instrument['fader'].gain.exponentialRampTo(gain, RAMP_INTERVAL);
-      return;
-    }
-    if (!instrument['on'] && !instrument['wasTriggerDistance'] && avgDistance < TRIGGER_DISTANCE) {
-      console.log(`${instrument['name']} on.`);
-      if (!instrument['isLoop']) {
-        // For non-looping sound effects, start over at beginning
-        instrument['player'].restart();
-      } else {
-        // Otherwise, pick up where we left off
-        // TODO does that work with Tone.Player()?
-        instrument['player'].start();
-      }
-      instrument['on'] = instrument['wasTriggerDistance'] = true;
-    }
-    if (instrument['wasTriggerDistance'] && avgDistance >= TRIGGER_DISTANCE) {
-      // Don't trigger on/off again until joints are separated and then brought back together
-      instrument['wasTriggerDistance'] = false;
-    }
-    if (instrument['on'] && !instrument['wasTriggerDistance'] && avgDistance < TRIGGER_DISTANCE) {
-      console.log(`${instrument['name']} off.`);
-      instrument['player'].stop();
-      instrument['wasTriggerDistance'] = true;
-      instrument['on'] = false;
-    }
-  });
+  const dancerPosition = {
+    x: average(positions.map(pos => pos.x)),
+    y: average(positions.map(pos => pos.y))
+  };
+  // We care about the dancer's position along the "journey" (right -> left side of space),
+  // and her deviance from the center line. Express these as fractions 0 -> 1.
+  dancerPosition.progress = map(dancerPosition.x, windowWidth, 0, 0, 1);
+  dancerPosition.deviance = map(abs(dancerPosition.y - windowHeight/2), 0, windowHeight/2, 0, 1);
+  console.log(`x: ${dancerPosition.x}, y: ${dancerPosition.y}, progress: ${dancerPosition.progress}, deviance: ${dancerPosition.deviance}`);
 
-  const avgX = average(jointsBuffer.map(frame => frame[kinectron.SPINESHOULDER].cameraX));
-  const avgZ = average(jointsBuffer.map(frame => frame[kinectron.SPINESHOULDER].cameraZ)) - 1.8;
-
-
-  const theta = computeTheta(avgX, avgZ);
-  // Theta: 0 to 2PI radians; far right -> far right. Panner settings: -1 to 1s, back -> back
-  const pannerSetting = map(theta, 2*Math.PI, 0, -1, 1);
-  console.log(`x: ${avgX}, z: ${avgZ}, theta: ${theta}, pan: ${pannerSetting}`);
-  panner.pan.linearRampTo(pannerSetting, RAMP_INTERVAL);
-
-  // ---- Show theta on a circle ----
-  background(256);
-  // The circle
-  strokeWeight(1);
-  stroke(0);
-  noFill();
-  ellipse(200, 200, 390);
-  // A marker for theta
-  noStroke();
-  fill('red');
-  const markerX = 200 + (390/2) * cos(theta);
-  const markerY = 200 + (390/2) * sin(theta);
-  ellipse(markerX, markerY, 8);
-
-
-  /*
-  const panLeftRight = constrain(map(avgX, -MAX_LEFT_RIGHT_DISTANCE, MAX_LEFT_RIGHT_DISTANCE, -1, 1), -1, 1);
-  const panFrontBack = constrain(map(avgZ, -MAX_FRONT_BACK_DISTANCE, MAX_FRONT_BACK_DISTANCE, -1, 1), -1, 1);
-  console.log(`avgX: ${avgX}, avgZ: ${avgZ}, panLeftRight: ${panLeftRight}, panFrontBack: ${panFrontBack}`);
-  // panner.panX.linearRampTo(panLeftRight, RAMP_INTERVAL);
-  // panner.panY.linearRampTo(panFrontBack, RAMP_INTERVAL);
-  panner.pan.linearRampTo(panLeftRight, RAMP_INTERVAL);
-  */
+  handleElectricity(dancerPosition);
+  handleHeartbeat(dancerPosition);
+  handleThreeVoices(dancerPosition);
 
   jointsBuffer = [];
+  positions = [];
 }
