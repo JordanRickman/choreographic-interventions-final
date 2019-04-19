@@ -155,7 +155,9 @@ function initTone() {
     player.connect(pistonGain);
     player.start();
   });
-  loadSound('breathing', 'breathing.wav', false);
+  loadSound('breathing', 'breathing.wav', false, player => {
+	player.volume.value = 44; // Boost by 44Db b/c the source sound is really soft.
+  });
 
   playbutton.removeEventListener('click', initTone);
   playbutton.disabled = true;
@@ -172,8 +174,8 @@ function setup() {
   // background(256);
 
   // Define and create an instance of kinectron
-  // kinectron = new Kinectron("10.17.201.104");
-  kinectron = new Kinectron("10.17.119.223");
+  kinectron = new Kinectron("10.17.201.104");
+  // kinectron = new Kinectron("10.17.119.223");
 
   // Connect with application over peer
   kinectron.makeConnection();
@@ -267,14 +269,15 @@ function handleBreathing() {
     const rightHandY = frame[kinectron.HANDRIGHT].cameraY;
     const handsAvgY = average([leftHandY, rightHandY]);
     const headY = frame[kinectron.HEAD].cameraY;
-    handsAvgY - headY;
+    return handsAvgY - headY;
   });
-  const avgHeight = averages(heights);
+  const avgHeight = average(heights);
   console.log(`breathing (left-right hand): ${avgDistance} meters apart, ${avgHeight} meters above head.`);
 
   // Note we are triggering on *greater* than TRIGGER_DISTANCE in this case
   if (avgHeight > BREATH_HAND_TRIGGER_HEIGHT && avgDistance > TRIGGER_DISTANCE && players['breathing'].state === 'stopped') {
-     players['breathing'].start();
+     console.log('breathing ON');
+	 players['breathing'].start();
   }
   // There is no need to handle stopping the breathing sound, because the Tone.Player does not loop.
   // However, the sound will keep repeating so long as the hands are in position.
@@ -300,6 +303,7 @@ function draw() {
   handleElectricity(dancerPosition);
   handleHeartbeat(dancerPosition);
   handleThreeVoices(dancerPosition);
+  handleBreathing(dancerPosition);
 
   jointsBuffer = [];
   positions = [];
