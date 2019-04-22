@@ -141,21 +141,21 @@ function initTone() {
     playbutton.disabled = false;
     playbutton.addEventListener('click', toggle);
   });
-  loadSound('three-voices', 'three-voices.mp3', true);
-  loadSound('electricity', 'electricity.wav', false);
-  loadSound('heartbeat', 'heartbeat-12x.wav', true, player => {
+  loadSound('three-voices', 'sounds/three-voices.mp3', true);
+  loadSound('electricity', 'sounds/electricity-trimmed.wav', false);
+  loadSound('heartbeat', 'sounds/heartbeat-12x.wav', true, player => {
     player.disconnect(0);
     heartbeatGain = new Tone.Gain().connect(masterVolume);
     player.connect(heartbeatGain);
     player.start();
   });
-  loadSound('piston', 'piston-12x.wav', true, player => {
+  loadSound('piston', 'sounds/piston-12x.wav', true, player => {
     player.disconnect(0);
     pistonGain = new Tone.Gain(0).connect(masterVolume); // start with only heartbeat
     player.connect(pistonGain);
     player.start();
   });
-  loadSound('breathing', 'breathing.wav', false, player => {
+  loadSound('breathing', 'sounds/breathing.wav', false, player => {
 	player.volume.value = 44; // Boost by 44Db b/c the source sound is really soft.
   });
 
