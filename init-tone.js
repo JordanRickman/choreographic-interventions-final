@@ -2,10 +2,10 @@
 let players = {};
 let masterVolume = null;
 let playing = false;
-const playbutton = document.getElementById('playbutton');
 let heartbeatGain = null;
 let pistonGain = null;
 let threeVoicesWasTriggered = false;
+let toneInitialized = false;
 
 function playAll() {
   console.log('playAll');
@@ -22,10 +22,8 @@ function stopAll() {
 function toggle() {
   if (playing) {
     stopAll();
-    document.getElementById('playbutton').innerHTML = 'Play All';
   } else {
     playAll();
-    document.getElementById('playbutton').innerHTML = 'Stop All';
   }
 }
 
@@ -44,13 +42,9 @@ function loadSound(label, filename, isLoop, callback) {
 function initTone() {
   Tone.context.resume(); // Start the AudioContext
   masterVolume = new Tone.Volume().toMaster();
-  Tone.Master.connect(document.getElementById("multichannel-meter"));
 
   Tone.Buffer.on('load', () => {
     console.log('All buffers finished loading.');
-    playbutton.innerHTML = 'Play All';
-    playbutton.disabled = false;
-    playbutton.addEventListener('click', toggle);
   });
   loadSound('electricity', 'sounds/electricity-trimmed.wav', true);
   loadSound('heartbeat', 'sounds/heartbeat-12x.wav', true, player => {
@@ -69,10 +63,5 @@ function initTone() {
   loadSound('breathing', 'sounds/breathing.wav', true, player => {
 	   player.volume.value = 44; // Boost by 44Db b/c the source sound is really soft.
   });
-
-  playbutton.removeEventListener('click', initTone);
-  playbutton.disabled = true;
-  playbutton.innerHTML = 'Loading...';
+  toneInitialized = true;
 }
-// Chrome requires user interaction to start the audio context
-document.getElementById('playbutton').addEventListener('click', initTone);

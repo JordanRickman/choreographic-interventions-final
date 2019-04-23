@@ -141,3 +141,9 @@ function draw() {
   jointsBuffer = [];
   positions = [];
 }
+
+// Chrome requires user interaction to start the audio context
+function mouseClicked() {
+  if (!toneInitialized)
+    initTone();
+}
