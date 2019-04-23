@@ -24,6 +24,8 @@ const ROOM_CENTER_Z = 2.5;
 // const RAMP_INTERVAL = WINDOW_SIZE-1 / 60;
 const RAMP_INTERVAL = 0.01;
 
-// Number of channels across and high in the GridMultiChannelOutput/GridMultiChannelPanner
-// const GRID_CHANNELS_WIDTH = 2;
-// const GRID_CHANNELS_HEIGHT = 2;
+// For blending the two heartbeats, we use a curve of the form y=x^n from x=0 to x=1
+// This is that n. For n=1, we have a linear ramp. As n increases, we get more
+// of a curve, hearing less mechanical heartbeat at first but having the
+// mechanical sound ramp up faster at the end.
+const CROSSFADE_CURVE_POWER = 2;

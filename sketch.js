@@ -47,8 +47,10 @@ function handleHeartbeat(dancerPosition) {
     return; // Buffers not yet loaded
 
   // Crossfade between the two "heartbeats"
+  // Heartbeat is softer, always ramp down linearly.
   heartbeatGain.gain.linearRampTo(1 - dancerPosition.progress, RAMP_INTERVAL);
-  pistonGain.gain.linearRampTo(dancerPosition.progress, RAMP_INTERVAL);
+  // Piston is louder, follow a curve to ramp up.
+  pistonGain.gain.linearRampTo(Math.pow(dancerPosition.progress, CROSSFADE_CURVE_POWER), RAMP_INTERVAL);
 }
 
 function handleBreathing() {
@@ -66,8 +68,7 @@ function handleBreathing() {
     return dist(jointOneX, jointOneY, jointOneZ, jointTwoX, jointTwoY, jointTwoZ);
   });
   const avgDistance = average(distances);
-  const avgHeight = average(heights);
-  console.log(`breathing (left-right hand): ${avgDistance} meters apart, ${avgHeight} meters above head.`);
+  console.log(`breathing (left hand - head): ${avgDistance} meters apart`);
 
   if (avgDistance <= TRIGGER_DISTANCE && players['breathing'].state === 'stopped') {
     console.log('breathing ON');
@@ -98,7 +99,7 @@ function draw() {
   dancerPosition.deviance = map(abs(dancerPosition.y - windowHeight/2), 0, windowHeight/2, 0, 1);
   console.log(`x: ${dancerPosition.x}, y: ${dancerPosition.y}, progress: ${dancerPosition.progress}, deviance: ${dancerPosition.deviance}`);
 
-  handleElectricity(dancerPosition);
+  // handleElectricity(dancerPosition);
   handleHeartbeat(dancerPosition);
   handleBreathing(dancerPosition);
 

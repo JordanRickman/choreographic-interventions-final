@@ -54,6 +54,7 @@ function initTone() {
   });
   loadSound('electricity', 'sounds/electricity-trimmed.wav', false);
   loadSound('heartbeat', 'sounds/heartbeat-12x.wav', true, player => {
+    player.volume.value = -12; // Make heartbeat softer (-6Db)
     player.disconnect(0);
     heartbeatGain = new Tone.Gain().connect(masterVolume);
     player.connect(heartbeatGain);
