@@ -52,7 +52,7 @@ function initTone() {
     playbutton.disabled = false;
     playbutton.addEventListener('click', toggle);
   });
-  loadSound('electricity', 'sounds/electricity-trimmed.wav', false);
+  loadSound('electricity', 'sounds/electricity-trimmed.wav', true);
   loadSound('heartbeat', 'sounds/heartbeat-12x.wav', true, player => {
     player.volume.value = -12; // Make heartbeat softer (-6Db)
     player.disconnect(0);

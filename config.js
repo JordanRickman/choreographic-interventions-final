@@ -6,15 +6,11 @@ const WINDOW_SIZE = 10;
 // When two joints get closer together than this distance (meters), trigger associated sound
 const TRIGGER_DISTANCE = 0.3;
 
-// Distance above the head (meters) at which the hands begin triggering breathing sound
-const BREATH_HAND_TRIGGER_HEIGHT = 0.2;
+// There is a "safe zone" path across the center of the screen, where the dancer
+// can walk (outside the mouth), without getting shocked.
+// This is its width as a proportion of the screen width.
+const SAFE_CENTER_PATH_HEIGHT_PROPORTION = 0.1;
 
-// Maximum distance (meters) from center of space for audio panning purposes.
-const MAX_LEFT_RIGHT_DISTANCE = 1;
-const MAX_FRONT_BACK_DISTANCE = 6;
-
-// Meters to center of space from kinect
-const ROOM_CENTER_Z = 2.5;
 
 
 // ----- Sound (ToneJS) -----

@@ -30,6 +30,41 @@ let sinValRate;
 let sinValMul;
 
 function drawMouth() {
+  // We check for shocking every WINDOW_SIZE frames, so only update then.
+  // Flash every other frame with frameCount % 2 == 0
+  if (frameCount - lastShockFrame < WINDOW_SIZE && frameCount % 2 === 0) {
+    drawMouthShock();
+  } else {
+    drawMouthNoShock();
+  }
+}
+
+function drawMouthShock() {
+  strokeWeight(2);
+  stroke(255);
+  for (i = height / 3; i < height / 3 * 2; i = i + 10) {
+    line(0, i, width, i);
+  }
+  fill(255);
+  for (i = 0; i < 10; i++) {
+    beginShape();
+    curveVertex(0, height / 2);
+    curveVertex(width / 6, height / 2);
+    curveVertex(width / 2, (height / 3 - sinVal) + i * 20 * noiseVal); // center
+    curveVertex(width / 6 * 5, height / 2);
+    curveVertex(width, height / 2);
+    endShape();
+    beginShape();
+    curveVertex(0, height / 2);
+    curveVertex(width / 6, height / 2);
+    curveVertex(width / 2, (height / 3 * 2 + sinVal) - i * 20 * noiseVal); // center
+    curveVertex(width / 6 * 5, height / 2);
+    curveVertex(width, height / 2);
+    endShape();
+  }
+}
+
+function drawMouthNoShock() {
   noStroke();
   fill(255, 30);
   sinValRate = frameCount / 4; // rate of inc and dec

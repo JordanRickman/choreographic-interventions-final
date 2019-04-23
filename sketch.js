@@ -1,5 +1,5 @@
+let safeCenterPathHeight;
 
-// ----- p5 setup() function -----
 function setup() {
   frameRate(60);
   createCanvas(windowWidth, windowHeight);
@@ -7,6 +7,9 @@ function setup() {
 
   // Visuals
   initTriangles();
+
+  safeCenterPathHeight = height * SAFE_CENTER_PATH_HEIGHT_PROPORTION;
+
 
   // Define and create an instance of kinectron
   kinectron = new Kinectron("10.17.201.104");
@@ -29,17 +32,15 @@ function setup() {
 
 
 // ----- Code for each draw() loop -----
-function handleElectricity(dancerPosition) {
-  if (!players['electricity'] || players['electricity'].state === 'started')
-    return;
+function handleShockSound() {
+  if (!players['electricity'])
+    return; // Buffer not loaded yet.
 
-  // Max progress: happens ~once per 2 seconds
-  // Min progress: happens ~once per 20 seconds
-  // This function fires 6x per second at 60 FPS.
-  const probability = map(dancerPosition.progress, 0, 1, 1/ (20*6), 1 / (2*6));
-  if (random() > probability)
-    return; // Don't fire sound
-  players['electricity'].start();
+  if (lastShockFrame - frameCount < WINDOW_SIZE && players['electricity'].state === 'stopped') {
+    players['electricity'].start();
+  } else if (lastShockFrame - frameCount >= WINDOW_SIZE && players['electricity'].state === 'started') {
+    players['electricity'].stop();
+  }
 }
 
 function handleHeartbeat(dancerPosition) {
@@ -79,6 +80,36 @@ function handleBreathing() {
   }
 }
 
+
+// On right (later) half of the screen, we shock once when she leaves the mouth,
+// then we don't (at least, on that half of the screen)
+let didShockOnsecondHalf = false;
+
+function shouldWeShock(dancerPosition) {
+  if (dancerPosition.y < (height/2 + safeCenterPathHeight/2) && dancerPosition.y > (height/2 - safeCenterPathHeight/2)) {
+    // There is a safe path across the center of the screen.
+    return false;
+  }
+  const pixelValue = get(dancerPosition.x, dancerPosition.y);
+  if (pixelValue[0] > 0) {
+    // We are within the mouth, don't shock
+    return false;
+  }
+
+  // On right (later) half of the screen, we shock once when she leaves the mouth,
+  // then we don't (at least, on that half of the screen)
+  if (dancerPosition.progress > 0.5 && !didShockOnsecondHalf) {
+    didShockOnsecondHalf = true;
+    return true;
+  } else if (dancerPosition.progress > 0.5) {
+    return false;
+  }
+
+  // Process of elimination: we are on left half of screen, but outside eye or safe path.
+  return true;
+}
+
+let lastShockFrame = -1; // Special value -1 indicates no shock yet.
 function draw() {
   // console.log(`FPS: ${getFrameRate()}`);
   background(0);
@@ -99,7 +130,11 @@ function draw() {
   dancerPosition.deviance = map(abs(dancerPosition.y - windowHeight/2), 0, windowHeight/2, 0, 1);
   console.log(`x: ${dancerPosition.x}, y: ${dancerPosition.y}, progress: ${dancerPosition.progress}, deviance: ${dancerPosition.deviance}`);
 
-  // handleElectricity(dancerPosition);
+  if (shouldWeShock(dancerPosition)) {
+    lastShockFrame = frameCount;
+  }
+
+  handleShockSound();
   handleHeartbeat(dancerPosition);
   handleBreathing(dancerPosition);
 
