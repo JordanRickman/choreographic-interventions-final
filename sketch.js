@@ -1,8 +1,12 @@
 
 // ----- p5 setup() function -----
 function setup() {
-  // createCanvas(400, 400);
-  // background(256);
+  frameRate(60);
+  createCanvas(windowWidth, windowHeight);
+  background(0);
+
+  // Visuals
+  initTriangles();
 
   // Define and create an instance of kinectron
   kinectron = new Kinectron("10.17.201.104");
@@ -48,7 +52,7 @@ function handleHeartbeat(dancerPosition) {
 }
 
 function handleBreathing() {
-  if (!players['three-voices'] || jointsBuffer.length == 0)
+  if (!players['breathing'] || jointsBuffer.length == 0)
     return; // Buffer not yet loaded.
   const player = players['three-voices'];
 
@@ -81,12 +85,14 @@ function handleBreathing() {
   // However, the sound will keep repeating so long as the hands are in position.
 }
 
-let frameCount = -1; // -1 b/c increments to 0 on first run of draw();
 function draw() {
   // console.log(`FPS: ${getFrameRate()}`);
+  background(0);
 
-  frameCount++;
+  drawMouth();
+
   if ((frameCount % WINDOW_SIZE) != 0 || positions.length == 0)
+    // Everything after this depends on kinect data, which we average over WINDOW_SIZE frames
     return;
 
   const dancerPosition = {
