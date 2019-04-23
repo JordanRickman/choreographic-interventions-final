@@ -36,9 +36,9 @@ function handleShockSound() {
   if (!players['electricity'])
     return; // Buffer not loaded yet.
 
-  if (lastShockFrame - frameCount < WINDOW_SIZE && players['electricity'].state === 'stopped') {
+  if (frameCount - lastShockFrame < WINDOW_SIZE && players['electricity'].state === 'stopped') {
     players['electricity'].start();
-  } else if (lastShockFrame - frameCount >= WINDOW_SIZE && players['electricity'].state === 'started') {
+  } else if (frameCount - lastShockFrame >= WINDOW_SIZE && players['electricity'].state === 'started') {
     players['electricity'].stop();
   }
 }
