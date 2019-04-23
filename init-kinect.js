@@ -1,7 +1,6 @@
 // ----- SETUP: KINECT -----
 let kinectron = null;
 let jointsBuffer = [];
-let frameCount = -1; // -1 b/c increments to 0 on first run of draw();
 
 function bodyTracked(body) {
   // console.log('bodyTracked');

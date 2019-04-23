@@ -12,8 +12,6 @@ function receiveOsc(address, values) {
   if (address == '/centers') {
     // Forget it if there's nothing
     if (values[0] == undefined) return;
-    // If there's data, empty out the positions array
-    positions = [];
     // Iterate through values array
     for (let value of values) {
       // For each value: 'x, y'... create a 2-position array
