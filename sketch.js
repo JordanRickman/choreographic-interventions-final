@@ -54,35 +54,28 @@ function handleHeartbeat(dancerPosition) {
 function handleBreathing() {
   if (!players['breathing'] || jointsBuffer.length == 0)
     return; // Buffer not yet loaded.
-  const player = players['three-voices'];
+  const player = players['breathing'];
 
   const distances = jointsBuffer.map(frame => {
     const jointOneX = frame[kinectron.HANDLEFT].cameraX;
     const jointOneY = frame[kinectron.HANDLEFT].cameraY;
     const jointOneZ = frame[kinectron.HANDLEFT].cameraZ;
-    const jointTwoX = frame[kinectron.HANDRIGHT].cameraX;
-    const jointTwoY = frame[kinectron.HANDRIGHT].cameraY;
-    const jointTwoZ = frame[kinectron.HANDRIGHT].cameraZ;
+    const jointTwoX = frame[kinectron.HEAD].cameraX;
+    const jointTwoY = frame[kinectron.HEAD].cameraY;
+    const jointTwoZ = frame[kinectron.HEAD].cameraZ;
     return dist(jointOneX, jointOneY, jointOneZ, jointTwoX, jointTwoY, jointTwoZ);
   });
   const avgDistance = average(distances);
-  const heights = jointsBuffer.map((frame, i) => {
-    const leftHandY = frame[kinectron.HANDLEFT].cameraY;
-    const rightHandY = frame[kinectron.HANDRIGHT].cameraY;
-    const handsAvgY = average([leftHandY, rightHandY]);
-    const headY = frame[kinectron.HEAD].cameraY;
-    return handsAvgY - headY;
-  });
   const avgHeight = average(heights);
   console.log(`breathing (left-right hand): ${avgDistance} meters apart, ${avgHeight} meters above head.`);
 
-  // Note we are triggering on *greater* than TRIGGER_DISTANCE in this case
-  if (avgHeight > BREATH_HAND_TRIGGER_HEIGHT && avgDistance > TRIGGER_DISTANCE && players['breathing'].state === 'stopped') {
-     console.log('breathing ON');
-	 players['breathing'].start();
+  if (avgDistance <= TRIGGER_DISTANCE && players['breathing'].state === 'stopped') {
+    console.log('breathing ON');
+	  players['breathing'].start();
+  } else if (avgDistance > TRIGGER_DISTANCE && players['breathing'].state === 'started') {
+    console.log('breathing OFF');
+    players['breathing'].stop();
   }
-  // There is no need to handle stopping the breathing sound, because the Tone.Player does not loop.
-  // However, the sound will keep repeating so long as the hands are in position.
 }
 
 function draw() {

@@ -65,8 +65,8 @@ function initTone() {
     player.connect(pistonGain);
     player.start();
   });
-  loadSound('breathing', 'sounds/breathing.wav', false, player => {
-	player.volume.value = 44; // Boost by 44Db b/c the source sound is really soft.
+  loadSound('breathing', 'sounds/breathing.wav', true, player => {
+	   player.volume.value = 44; // Boost by 44Db b/c the source sound is really soft.
   });
 
   playbutton.removeEventListener('click', initTone);
