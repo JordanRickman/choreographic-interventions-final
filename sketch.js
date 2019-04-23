@@ -95,7 +95,7 @@ function draw() {
   };
   // We care about the dancer's position along the "journey" (right -> left side of space),
   // and her deviance from the center line. Express these as fractions 0 -> 1.
-  dancerPosition.progress = map(dancerPosition.x, windowWidth, 0, 0, 1);
+  dancerPosition.progress = map(dancerPosition.x, 0, windowWidth, 0, 1);
   dancerPosition.deviance = map(abs(dancerPosition.y - windowHeight/2), 0, windowHeight/2, 0, 1);
   console.log(`x: ${dancerPosition.x}, y: ${dancerPosition.y}, progress: ${dancerPosition.progress}, deviance: ${dancerPosition.deviance}`);
 
