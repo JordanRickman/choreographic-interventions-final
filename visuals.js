@@ -40,28 +40,29 @@ function drawMouth() {
 }
 
 function drawMouthShock() {
-  strokeWeight(2);
-  stroke(255);
-  for (i = height / 3; i < height / 3 * 2; i = i + 10) {
-    line(0, i, width, i);
-  }
-  fill(255);
-  for (i = 0; i < 10; i++) {
-    beginShape();
-    curveVertex(0, height / 2);
-    curveVertex(width / 6, height / 2);
-    curveVertex(width / 2, (height / 3 - sinVal) + i * 20 * noiseVal); // center
-    curveVertex(width / 6 * 5, height / 2);
-    curveVertex(width, height / 2);
-    endShape();
-    beginShape();
-    curveVertex(0, height / 2);
-    curveVertex(width / 6, height / 2);
-    curveVertex(width / 2, (height / 3 * 2 + sinVal) - i * 20 * noiseVal); // center
-    curveVertex(width / 6 * 5, height / 2);
-    curveVertex(width, height / 2);
-    endShape();
-  }
+  background(255);
+  // strokeWeight(2);
+  // stroke(255);
+  // for (i = height / 3; i < height / 3 * 2; i = i + 10) {
+  //   line(0, i, width, i);
+  // }
+  // fill(255);
+  // for (i = 0; i < 10; i++) {
+  //   beginShape();
+  //   curveVertex(0, height / 2);
+  //   curveVertex(width / 6, height / 2);
+  //   curveVertex(width / 2, (height / 3 - sinVal) + i * 20 * noiseVal); // center
+  //   curveVertex(width / 6 * 5, height / 2);
+  //   curveVertex(width, height / 2);
+  //   endShape();
+  //   beginShape();
+  //   curveVertex(0, height / 2);
+  //   curveVertex(width / 6, height / 2);
+  //   curveVertex(width / 2, (height / 3 * 2 + sinVal) - i * 20 * noiseVal); // center
+  //   curveVertex(width / 6 * 5, height / 2);
+  //   curveVertex(width, height / 2);
+  //   endShape();
+  // }
 }
 
 function drawMouthNoShock() {
