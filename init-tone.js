@@ -52,7 +52,6 @@ function initTone() {
     playbutton.disabled = false;
     playbutton.addEventListener('click', toggle);
   });
-  loadSound('three-voices', 'sounds/three-voices.mp3', true);
   loadSound('electricity', 'sounds/electricity-trimmed.wav', false);
   loadSound('heartbeat', 'sounds/heartbeat-12x.wav', true, player => {
     player.disconnect(0);

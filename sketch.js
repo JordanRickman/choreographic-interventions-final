@@ -47,39 +47,6 @@ function handleHeartbeat(dancerPosition) {
   pistonGain.gain.linearRampTo(dancerPosition.progress, RAMP_INTERVAL);
 }
 
-function handleThreeVoices(dancerPosition) {
-  if (!players['three-voices'] || jointsBuffer.length == 0)
-    return; // Buffer not yet loaded.
-  const player = players['three-voices'];
-
-  const distances = jointsBuffer.map(frame => {
-    const jointOneX = frame[kinectron.ELBOWRIGHT].cameraX;
-    const jointOneY = frame[kinectron.ELBOWRIGHT].cameraY;
-    const jointOneZ = frame[kinectron.ELBOWRIGHT].cameraZ;
-    const jointTwoX = frame[kinectron.KNEERIGHT].cameraX;
-    const jointTwoY = frame[kinectron.KNEERIGHT].cameraY;
-    const jointTwoZ = frame[kinectron.KNEERIGHT].cameraZ;
-    return dist(jointOneX, jointOneY, jointOneZ, jointTwoX, jointTwoY, jointTwoZ);
-  });
-  const avgDistance = average(distances);
-  console.log(`three-voices (right elbow-knee): ${avgDistance} meters`);
-  if (player.state === 'stopped' && !threeVoicesWasTriggered && avgDistance < TRIGGER_DISTANCE) {
-    console.log(`three-voices ON.`);
-    // TODO figure out how to seek to where we left off
-    player.start();
-    threeVoicesWasTriggered = true;
-  }
-  if (threeVoicesWasTriggered && avgDistance >= TRIGGER_DISTANCE) {
-    // Don't trigger on/off again until joints are separated and then brought back together
-    threeVoicesWasTriggered = false;
-  }
-  if (player.state === 'started' && !threeVoicesWasTriggered && avgDistance < TRIGGER_DISTANCE) {
-    console.log(`three-voices OFF.`);
-    player.stop();
-    threeVoicesWasTriggered = true;
-  }
-}
-
 function handleBreathing() {
   if (!players['three-voices'] || jointsBuffer.length == 0)
     return; // Buffer not yet loaded.
@@ -134,7 +101,6 @@ function draw() {
 
   handleElectricity(dancerPosition);
   handleHeartbeat(dancerPosition);
-  handleThreeVoices(dancerPosition);
   handleBreathing(dancerPosition);
 
   jointsBuffer = [];
