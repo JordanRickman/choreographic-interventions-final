@@ -144,3 +144,13 @@ function mouseClicked() {
   if (!toneInitialized)
     initTone();
 }
+
+function keyReleased() {
+  if (keyCode === DOWN_ARROW) {
+    if (masterVolume)
+      masterVolume.volume.linearRampTo(masterVolume.volume.value - 2, 0.1);
+  } else if (keyCode === UP_ARROW) {
+    if (masterVolume)
+      masterVolume.volume.linearRampTo(masterVolume.volume.value + 2, 0.1);
+  }
+}
