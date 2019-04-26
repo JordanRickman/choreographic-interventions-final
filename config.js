@@ -15,6 +15,10 @@ const TRIGGER_DISTANCE = 0.3;
 // This is its width as a proportion of the "deviance" variable.
 const SAFE_CENTER_PATH_HEIGHT_PROPORTION = 0.2;
 
+// For manual control, step size of left/right/up/down arrows.
+const MANUAL_X_STEP_SIZE = 0.05;
+const MANUAL_Y_STEP_SIZE = 0.1;
+
 
 
 // ----- Sound (ToneJS) -----

@@ -1,8 +1,15 @@
+let manualOverrideX;
+let manualOverrideY;
+let isManualOverride;
 
 function setup() {
   frameRate(60);
   createCanvas(windowWidth, windowHeight);
   background(0);
+
+  isManualOverride = false;
+  manualOverrideX = 0;
+  manualOverrideY = SCREEN_HEIGHT / 2;
 
   // Visuals
   initTriangles();
@@ -113,14 +120,20 @@ function draw() {
 
   drawMouth();
 
-  if ((frameCount % WINDOW_SIZE) != 0 || positions.length == 0)
+  if ((frameCount % WINDOW_SIZE) != 0 || (positions.length == 0 && !isManualOverride))
     // Everything after this depends on kinect data, which we average over WINDOW_SIZE frames
     return;
 
-  const dancerPosition = {
-    x: average(positions.map(pos => pos.x)),
-    y: average(positions.map(pos => pos.y))
-  };
+  const dancerPosition = isManualOverride?
+    {
+      x: manualOverrideX,
+      y: manualOverrideY
+    }
+  :
+    {
+      x: average(positions.map(pos => pos.x)),
+      y: average(positions.map(pos => pos.y))
+    };
   // We care about the dancer's position along the "journey" (right -> left side of space),
   // and her deviance from the center line. Express these as fractions 0 -> 1.
   dancerPosition.progress = map(dancerPosition.x, 0, SCREEN_WIDTH, 0, 1);
@@ -146,11 +159,35 @@ function mouseClicked() {
 }
 
 function keyReleased() {
-  if (keyCode === DOWN_ARROW) {
-    if (masterVolume)
+  // console.log(`Key: ${key}, keyCode: ${keyCode}`);
+  if (keyCode === 189) { // Minus
+    if (masterVolume) {
       masterVolume.volume.linearRampTo(masterVolume.volume.value - 2, 0.1);
-  } else if (keyCode === UP_ARROW) {
-    if (masterVolume)
+      console.log(`Volume: ${masterVolume.volume.value - 2}`);
+    }
+  } else if (keyCode === 187) { // Plus
+    if (masterVolume) {
       masterVolume.volume.linearRampTo(masterVolume.volume.value + 2, 0.1);
+      console.log(`Volume: ${masterVolume.volume.value + 2}`);
+    }
+  } else if (key === 'M') {
+    isManualOverride = !isManualOverride;
+    console.log(`Manual Override: ${isManualOverride}, x: ${manualOverrideX}, y: ${manualOverrideY}`);
+  } else if (keyCode === UP_ARROW) {
+    manualOverrideY -= SCREEN_HEIGHT * MANUAL_Y_STEP_SIZE; // Minus b/c towards top of screen.
+    manualOverrideY = constrain(manualOverrideY, 0, SCREEN_HEIGHT);
+    console.log(`Manual Override: ${isManualOverride}, x: ${manualOverrideX}, y: ${manualOverrideY}`);
+  } else if (keyCode === DOWN_ARROW) {
+    manualOverrideY += SCREEN_HEIGHT * MANUAL_Y_STEP_SIZE; // Plus b/c towards bottom of screen.
+    manualOverrideY = constrain(manualOverrideY, 0, SCREEN_HEIGHT);
+    console.log(`Manual Override: ${isManualOverride}, x: ${manualOverrideX}, y: ${manualOverrideY}`);
+  } else if (keyCode === LEFT_ARROW) {
+    manualOverrideX -= SCREEN_WIDTH * MANUAL_X_STEP_SIZE;
+    manualOverrideX = constrain(manualOverrideX, 0, SCREEN_WIDTH);
+    console.log(`Manual Override: ${isManualOverride}, x: ${manualOverrideX}, y: ${manualOverrideY}`);
+  } else if (keyCode === RIGHT_ARROW) {
+    manualOverrideX += SCREEN_WIDTH * MANUAL_X_STEP_SIZE;
+    manualOverrideX = constrain(manualOverrideX, 0, SCREEN_WIDTH);
+    console.log(`Manual Override: ${isManualOverride}, x: ${manualOverrideX}, y: ${manualOverrideY}`);
   }
 }
