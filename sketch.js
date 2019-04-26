@@ -119,6 +119,7 @@ function draw() {
   background(0);
 
   drawMouth();
+  drawTriangles();
 
   if ((frameCount % WINDOW_SIZE) != 0 || (positions.length == 0 && !isManualOverride))
     // Everything after this depends on kinect data, which we average over WINDOW_SIZE frames
@@ -142,6 +143,8 @@ function draw() {
 
   if (shouldWeShock(dancerPosition)) {
     lastShockFrame = frameCount;
+    triFrame.push(frameCount); // push frame count to display triangles
+    shockCount = shockCount + 0.1;
   }
 
   handleShockSound();

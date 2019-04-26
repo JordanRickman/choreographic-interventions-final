@@ -1,22 +1,63 @@
 //TRIANGLES
 let ptriFrame = []; // previous triFrame
 let triFrame = [];
-let tri = 10; // division for triangles
-let xPoints = [];
-let yPoints = [];
+let x1, y1, x2, y2, x3, y3;
+let xx1 = [];
+let yy1 = [];
+let xx2 = [];
+let yy2 = [];
+let xx3 = [];
+let yy3 = [];
 let shockCount = 0;
 
 function initTriangles() {
-  //TRIANGLES
-  for (i = 1; i < tri * 3; i++) { // create 30 points for 10 triangles
-    x1 = random(width / tri * (i - 1), width / tri * i);
-    x2 = random(width / tri * (i - 1), width / tri * i);
-    x3 = random(width / tri * (i - 1), width / tri * i);
-    y1 = random(height);
-    y2 = random(height);
-    y3 = random(height);
-    xPoints.push(x1, x2, x3);
-    yPoints.push(y1, y2, y3);
+  for (i = 0; i < 8; i++) {
+    x1 = width / 2 + (random(-width / 5, width / 5));
+    y1 = height / 2 + (random(-height / 10, height / 10));
+    xx1.push(x1);
+    yy1.push(y1);
+
+    x2 = (width / 3 * i/2) - (random(width / 3));
+    if (i % 2 == 0) {
+      y2 = height / 10 * 9;
+    } else {
+      y2 = height / 10;
+    }
+    xx2.push(x2);
+    yy2.push(y2);
+
+    x3 = x2 + width / 4;
+    y3 = y2 + (random(-height / 20, height / 20));
+    xx3.push(x3);
+    yy3.push(y3);
+  }
+}
+
+function drawTriangles() {
+  if (frameCount - lastShockFrame < WINDOW_SIZE) {
+    //TRIANGLES DURING SHOCK
+    strokeWeight(1);
+    fill(255); // draw triangles during shock
+    for (i = 0; i < shockCount; i++) {
+      beginShape();
+      vertex(xx1[i], yy1[i]);
+      vertex(xx2[i], yy2[i]);
+      vertex(xx3[i], yy3[i]);
+      endShape(CLOSE);
+    }
+  } else {
+    // TRIANGLE AFTER SHOCK
+    if (frameCount > triFrame[0]) { // draw triangles after shock
+      // stroke(255);
+      fill(255, 50);
+      for (i = 0; i < shockCount; i++) {
+        beginShape();
+        vertex(xx1[i], yy1[i]);
+        vertex(xx2[i], yy2[i]);
+        vertex(xx3[i], yy3[i]);
+        endShape(CLOSE);
+      }
+    }
   }
 }
 
