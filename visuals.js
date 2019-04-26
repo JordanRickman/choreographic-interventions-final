@@ -67,7 +67,7 @@ function drawMouthShock() {
 
 function drawMouthNoShock() {
   noStroke();
-  fill(255, 30);
+  fill(255, 15);
   sinValRate = frameCount / 4; // rate of inc and dec
   sinValMul = width / 20; // size of mouth
   noiseScale = noiseScale + 0.02;
@@ -78,16 +78,21 @@ function drawMouthNoShock() {
   for (i = 0; i < 10; i++) {
     beginShape();
     curveVertex(0, height / 2);
-    curveVertex(width / 6, height / 2);
+    curveVertex(0, height / 2);
+    // curveVertex(width / 6, height / 2);
     curveVertex(width / 2, (height / 3 - sinVal) + i * 20 * noiseVal); // center
-    curveVertex(width / 6 * 5, height / 2);
+    // curveVertex(width / 6 * 5, height / 2);
+    curveVertex(width, height / 2);
     curveVertex(width, height / 2);
     endShape();
+
     beginShape();
     curveVertex(0, height / 2);
-    curveVertex(width / 6, height / 2);
+    curveVertex(0, height / 2);
+    // curveVertex(width / 6, height / 2);
     curveVertex(width / 2, (height / 3 * 2 + sinVal) - i * 20 * noiseVal); // center
-    curveVertex(width / 6 * 5, height / 2);
+    // curveVertex(width / 6 * 5, height / 2);
+    curveVertex(width, height / 2);
     curveVertex(width, height / 2);
     endShape();
   }

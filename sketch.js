@@ -83,7 +83,7 @@ function handleBreathing() {
 let didShockOnsecondHalf = false;
 
 function shouldWeShock(dancerPosition) {
-  if (dancerPosition.deviance < SAFE_CENTER_PATH_HEIGHT_PROPORTION)
+  if (dancerPosition.deviance < SAFE_CENTER_PATH_HEIGHT_PROPORTION) {
     // There is a safe path across the center of the screen.
     return false;
   }
