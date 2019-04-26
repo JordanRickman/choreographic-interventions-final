@@ -1,4 +1,3 @@
-let safeCenterPathHeight;
 
 function setup() {
   frameRate(60);
@@ -7,8 +6,6 @@ function setup() {
 
   // Visuals
   initTriangles();
-
-  safeCenterPathHeight = height * SAFE_CENTER_PATH_HEIGHT_PROPORTION;
 
 
   // Define and create an instance of kinectron
@@ -86,7 +83,7 @@ function handleBreathing() {
 let didShockOnsecondHalf = false;
 
 function shouldWeShock(dancerPosition) {
-  if (dancerPosition.y < (height/2 + safeCenterPathHeight/2) && dancerPosition.y > (height/2 - safeCenterPathHeight/2)) {
+  if (dancerPosition.deviance < SAFE_CENTER_PATH_HEIGHT_PROPORTION)
     // There is a safe path across the center of the screen.
     return false;
   }
@@ -126,8 +123,8 @@ function draw() {
   };
   // We care about the dancer's position along the "journey" (right -> left side of space),
   // and her deviance from the center line. Express these as fractions 0 -> 1.
-  dancerPosition.progress = map(dancerPosition.x, 0, windowWidth, 0, 1);
-  dancerPosition.deviance = map(abs(dancerPosition.y - windowHeight/2), 0, windowHeight/2, 0, 1);
+  dancerPosition.progress = map(dancerPosition.x, 0, SCREEN_WIDTH, 0, 1);
+  dancerPosition.deviance = map(abs(dancerPosition.y - SCREEN_HEIGHT/2), 0, SCREEN_HEIGHT/2, 0, 1);
   console.log(`x: ${dancerPosition.x}, y: ${dancerPosition.y}, progress: ${dancerPosition.progress}, deviance: ${dancerPosition.deviance}`);
 
   if (shouldWeShock(dancerPosition)) {

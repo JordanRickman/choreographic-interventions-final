@@ -1,5 +1,9 @@
 // ----- KINECT -----
 
+// Fixed width and height of screen to make sure position tracking works.
+const SCREEN_WIDTH = 1920;
+const SCREEN_HEIGHT = 1080;
+
 // Number of frames (draw() loop @ 60fps) over which position and joints are averaged.
 const WINDOW_SIZE = 10;
 
@@ -8,8 +12,8 @@ const TRIGGER_DISTANCE = 0.3;
 
 // There is a "safe zone" path across the center of the screen, where the dancer
 // can walk (outside the mouth), without getting shocked.
-// This is its width as a proportion of the screen width.
-const SAFE_CENTER_PATH_HEIGHT_PROPORTION = 0.1;
+// This is its width as a proportion of the "deviance" variable.
+const SAFE_CENTER_PATH_HEIGHT_PROPORTION = 0.2;
 
 
 
