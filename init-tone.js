@@ -61,7 +61,7 @@ function initTone() {
     player.start();
   });
   loadSound('breathing', 'sounds/breathing.wav', true, player => {
-	   player.volume.value = 44; // Boost by 44Db b/c the source sound is really soft.
+	   player.volume.value = 6; // Boost by 12Db b/c the source sound is really soft.
   });
   toneInitialized = true;
 }

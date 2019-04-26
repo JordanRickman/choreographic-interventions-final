@@ -1,6 +1,7 @@
 let manualOverrideX;
 let manualOverrideY;
 let isManualOverride;
+let isManualShock;
 
 function setup() {
   frameRate(60);
@@ -10,6 +11,7 @@ function setup() {
   isManualOverride = false;
   manualOverrideX = 0;
   manualOverrideY = SCREEN_HEIGHT / 2;
+  isManualShock = false;
 
   // Visuals
   initTriangles();
@@ -90,6 +92,10 @@ function handleBreathing() {
 let didShockOnsecondHalf = false;
 
 function shouldWeShock(dancerPosition) {
+  if (isManualShock) {
+    return true;
+  }
+
   if (dancerPosition.deviance < SAFE_CENTER_PATH_HEIGHT_PROPORTION) {
     // There is a safe path across the center of the screen.
     return false;
@@ -161,6 +167,13 @@ function mouseClicked() {
     initTone();
 }
 
+function keyPressed() {
+  if (key === 'S') {
+    isManualShock = true;
+    console.log('Manual Shock ON.');
+  }
+}
+
 function keyReleased() {
   // console.log(`Key: ${key}, keyCode: ${keyCode}`);
   if (keyCode === 189) { // Minus
@@ -192,5 +205,17 @@ function keyReleased() {
     manualOverrideX += SCREEN_WIDTH * MANUAL_X_STEP_SIZE;
     manualOverrideX = constrain(manualOverrideX, 0, SCREEN_WIDTH);
     console.log(`Manual Override: ${isManualOverride}, x: ${manualOverrideX}, y: ${manualOverrideY}`);
+  } else if (key === 'S') {
+    isManualShock = false;
+    console.log('Manual Shock OFF.');
+  } else if (key === 'B') {
+    console.log('Manual breathing trigger.');
+    if (players['breathing']) {
+      const player = players['breathing'];
+      if (player.state === 'stopped')
+        player.start();
+      else if (player.state === 'started')
+        player.stop();
+    }
   }
 }
